@@ -13,11 +13,17 @@ class RecordSerializer(serializers.Serializer):
     state = serializers.CharField(max_length=64)
     pincode = serializers.CharField(max_length=16)
 
-    # def create(self, validated_data):
-    #     return super().create(**validated_data)
+    def create(self, validated_data):
+        return Record.objects.create(**validated_data)
 
-    # def update(self, instance, validated_data):
-    #     return super().update(instance, **validated_data)
+    def update(self, instance, validated_data):
+        # return Record.objects.update(instance, **validated_data)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+        return instance
 
     # def _read_only_defaults(self):
     #     return super()._read_only_defaults()
